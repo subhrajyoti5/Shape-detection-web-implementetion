@@ -1,1 +1,24 @@
 
+version: '3.8'
+
+services:
+  face-detection-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      # For development: mount source code directories
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+      # Mount a volume for temporary images
+      - face_detection_temp:/app/temp_images
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+volumes:
+  face_detection_temp:
+    # Volume for temporary images storage
